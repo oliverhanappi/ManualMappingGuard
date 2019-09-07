@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
+        <AssemblyName>ManualMappingGuard.Tests</AssemblyName>
+        <RootNamespace>ManualMappingGuard.Tests</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.2.1" />
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+      <PackageReference Include="NUnit" Version="3.12.0" />
+      <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Analyzers\Analyzers.csproj" />
+      <ProjectReference Include="..\Core\Core.csproj" />
+    </ItemGroup>
+
+</Project>

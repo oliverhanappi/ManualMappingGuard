@@ -1,0 +1,9 @@
+# Build Output
+
+bin
+obj
+
+# IDE Stuff
+
+.idea
+*.user
