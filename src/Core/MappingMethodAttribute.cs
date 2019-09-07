@@ -2,8 +2,8 @@
 
 namespace ManualMappingGuard
 {
-    [AttributeUsage(AttributeTargets.Method)]
-    public class MappingMethodAttribute : Attribute
-    {
-    }
+  [AttributeUsage(AttributeTargets.Method)]
+  public class MappingMethodAttribute : Attribute
+  {
+  }
 }
