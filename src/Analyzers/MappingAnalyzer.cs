@@ -27,42 +27,33 @@ namespace ManualMappingGuard.Analyzers
 
     private void OnMethodDeclaration(SyntaxNodeAnalysisContext context)
     {
+      var location = context.Node.GetLocation();
       var method = (IMethodSymbol) context.ContainingSymbol;
+
       if (!method.IsMappingMethod())
         return;
 
       var mappingTargetType = method.GetMappingTargetType(context.Compilation);
       if (mappingTargetType == null)
       {
-        context.ReportDiagnostic(Diagnostic.Create(Diagnostics.MissingMappingTargetType, context.Node.GetLocation()));
+        context.ReportDiagnostic(Diagnostic.Create(Diagnostics.MissingMappingTargetType, location));
         return;
       }
 
       var mappingTargetProperties = mappingTargetType.GetMappingTargetProperties();
       var mappedProperties = new HashSet<IPropertySymbol>();
 
-      var methodDeclarationSyntax = (MethodDeclarationSyntax) context.Node;
-      var assignmentExpressionSyntaxes = methodDeclarationSyntax.DescendantNodes()
-        .OfType<AssignmentExpressionSyntax>()
-        .ToList();
-
-      foreach (var assignmentExpressionSyntax in assignmentExpressionSyntaxes)
+      foreach (var assignment in context.Node.DescendantNodes().OfType<AssignmentExpressionSyntax>())
       {
-        var memberAccessExpressionSyntax = (MemberAccessExpressionSyntax) assignmentExpressionSyntax.Left;
-        var accessedType = context.SemanticModel.GetTypeInfo(memberAccessExpressionSyntax.Expression);
-        if (!accessedType.Type.Equals(mappingTargetType))
-          continue;
-
-        var properties = accessedType.Type.GetMembers(memberAccessExpressionSyntax.Name.ToString())
-          .OfType<IPropertySymbol>();
-
-        foreach (var propertySymbol in properties)
-          mappedProperties.Add(propertySymbol);
+        var assignmentTarget = context.SemanticModel.GetSymbolInfo(assignment.Left);
+        if (assignmentTarget.Symbol is IPropertySymbol targetProperty)
+          mappedProperties.Add(targetProperty);
       }
 
-      foreach (var notAssignedProperty in mappingTargetProperties.Except(mappedProperties).OrderBy(p => p.Name))
+      var unmappedProperties = mappingTargetProperties.Except(mappedProperties, new RootPropertyEqualityComparer());
+      foreach (var unmappedProperty in unmappedProperties.OrderBy(p => p.Name))
       {
-        var diagnostic = Diagnostic.Create(Diagnostics.UnmappedProperty, methodDeclarationSyntax.GetLocation(), notAssignedProperty.Name);
+        var diagnostic = Diagnostic.Create(Diagnostics.UnmappedProperty, location, unmappedProperty.Name);
         context.ReportDiagnostic(diagnostic);
       }
     }

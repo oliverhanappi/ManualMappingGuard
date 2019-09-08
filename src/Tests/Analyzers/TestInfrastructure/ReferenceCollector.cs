@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace ManualMappingGuard.Tests.Infrastructure
+namespace ManualMappingGuard.Analyzers.TestInfrastructure
 {
   public static class ReferenceCollector
   {

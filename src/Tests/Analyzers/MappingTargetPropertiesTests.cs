@@ -1,10 +1,9 @@
 using System.Linq;
-using ManualMappingGuard.Analyzers;
-using ManualMappingGuard.Tests.Infrastructure;
+using ManualMappingGuard.Analyzers.TestInfrastructure;
 using Microsoft.CodeAnalysis;
 using NUnit.Framework;
 
-namespace ManualMappingGuard.Tests
+namespace ManualMappingGuard.Analyzers
 {
   [TestFixture]
   public class MappingTargetPropertiesTests

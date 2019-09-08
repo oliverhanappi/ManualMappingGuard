@@ -1,7 +1,7 @@
 using System;
 using Microsoft.CodeAnalysis;
 
-namespace ManualMappingGuard.Analyzers
+namespace ManualMappingGuard.Analyzers.Extensions
 {
   public static class CompilationExtensions
   {
@@ -9,7 +9,7 @@ namespace ManualMappingGuard.Analyzers
     {
       var type = compilation.GetTypeByMetadataName(metadataName);
       if (type == null)
-        throw new ArgumentException($"Failed to get type {metadataName}.");
+        throw new ArgumentException($"Failed to get type {metadataName}.", nameof(metadataName));
 
       return type;
     }

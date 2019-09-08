@@ -1,4 +1,4 @@
-namespace ManualMappingGuard.Tests.Infrastructure
+namespace ManualMappingGuard
 {
   public static class Build
   {

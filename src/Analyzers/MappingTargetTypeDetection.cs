@@ -1,16 +1,12 @@
 using System.Linq;
 using System.Threading.Tasks;
+using ManualMappingGuard.Analyzers.Extensions;
 using Microsoft.CodeAnalysis;
 
 namespace ManualMappingGuard.Analyzers
 {
-  public static class MethodSymbolExtensions
+  public static class MappingTargetTypeDetection 
   {
-    public static bool IsMappingMethod(this IMethodSymbol method)
-    {
-      return method.GetAttributes().Any(a => a.AttributeClass.Name == "MappingMethodAttribute");
-    }
-
     public static ITypeSymbol? GetMappingTargetType(this IMethodSymbol method, Compilation compilation)
     {
       if (method.ReturnsVoid)

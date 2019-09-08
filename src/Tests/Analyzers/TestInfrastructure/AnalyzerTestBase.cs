@@ -6,9 +6,10 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using NUnit.Framework;
 
-namespace ManualMappingGuard.Tests.Infrastructure
+namespace ManualMappingGuard.Analyzers.TestInfrastructure
 {
-  public abstract class AnalyzerTestBase<TAnalyzer> where TAnalyzer : DiagnosticAnalyzer, new()
+  public abstract class AnalyzerTestBase<TAnalyzer>
+    where TAnalyzer : DiagnosticAnalyzer, new()
   {
     protected virtual string CodeTemplate => "{0}";
 

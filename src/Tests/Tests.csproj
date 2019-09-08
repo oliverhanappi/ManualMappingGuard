@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp2.1</TargetFramework>
         <AssemblyName>ManualMappingGuard.Tests</AssemblyName>
-        <RootNamespace>ManualMappingGuard.Tests</RootNamespace>
+        <RootNamespace>ManualMappingGuard</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

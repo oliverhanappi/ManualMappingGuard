@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ManualMappingGuard;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using NUnit.Framework;
 
-namespace ManualMappingGuard.Tests.Infrastructure
+namespace ManualMappingGuard.Analyzers.TestInfrastructure
 {
   public static class CompilationUtility
   {
+    private static int s_nextId = 1;
+    
     private static readonly Lazy<IReadOnlyCollection<MetadataReference>> s_metadataReferences
       = new Lazy<IReadOnlyCollection<MetadataReference>>(CreateMetadataReferences);
 
@@ -24,7 +27,8 @@ namespace ManualMappingGuard.Tests.Infrastructure
 
     public static Compilation Compile(string code)
     {
-      var assemblyName = $"DynamicCompilation{Guid.NewGuid():N}";
+      var nextId = Interlocked.Increment(ref s_nextId);
+      var assemblyName = $"T{nextId}_{TestContext.CurrentContext.Test.FullName}";
       var syntaxTree = CSharpSyntaxTree.ParseText(code);
       return CSharpCompilation.Create(assemblyName, new[] {syntaxTree}, s_metadataReferences.Value);
     }
