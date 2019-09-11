@@ -10,7 +10,31 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.2.1" />
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.2.1" PrivateAssets="all" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Core\Core.csproj" PrivateAssets="all" />
+    </ItemGroup>
+    
+    <!-- NuGet Package Configuration -->
+    <!-- https://roslyn-analyzers.readthedocs.io/en/latest/create-nuget-package.html -->
+    
+    <PropertyGroup>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <NoPackageAnalysis>true</NoPackageAnalysis>
+        
+        <PackageId>ManualMappingGuard</PackageId>
+        <Authors>Oliver Hanappi</Authors>
+        <PackageLicenseUrl>https://github.com/oliverhanappi/ManualMappingGuard/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageProjectUrl>https://github.com/oliverhanappi/ManualMappingGuard</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/oliverhanappi/ManualMappingGuard</RepositoryUrl>
+        <Description>Roslyn analyzer for C# which aids writing manual mapping code.</Description>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+        <None Include="$(OutputPath)\ManualMappingGuard.dll" Pack="true" PackagePath="lib/netstandard2.0" Visible="false" />
     </ItemGroup>
 
 </Project>
