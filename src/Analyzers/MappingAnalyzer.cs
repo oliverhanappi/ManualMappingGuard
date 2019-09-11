@@ -27,11 +27,15 @@ namespace ManualMappingGuard.Analyzers
 
     private void OnMethodDeclaration(SyntaxNodeAnalysisContext context)
     {
-      var location = context.Node.GetLocation();
       var method = (IMethodSymbol) context.ContainingSymbol;
-
       if (!method.IsMappingMethod())
         return;
+
+      var methodDeclarationSyntax = (MethodDeclarationSyntax) context.Node;
+      var mappingMethodAttributeSyntax = MappingMethodDetection
+        .GetMappingMethodAttributeSyntax(methodDeclarationSyntax, context.SemanticModel);
+
+      var location = mappingMethodAttributeSyntax?.GetLocation() ?? methodDeclarationSyntax.Identifier.GetLocation();
 
       var mappingTargetType = method.GetMappingTargetType(context.Compilation);
       if (mappingTargetType == null)
