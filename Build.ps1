@@ -1,8 +1,9 @@
 param
 (
-    $Configuration = "Release",
-    $Version = "0.0.0.0",
-    $PackageVersion = "0.0.0"
+    [string] $Configuration = "Release",
+    [string] $Version = "0.0.0.0",
+    [string] $PackageVersion = "0.0.0",
+    [switch] $SkipTests = $false
 )
 
 Push-Location $PSScriptRoot
@@ -15,8 +16,11 @@ try
     Write-Output "Building..."
     dotnet build --configuration $Configuration --verbosity minimal --nologo -p:Version=$Version -p:PackageVersion=$PackageVersion
     
-    Write-Output "Running unit tests..."
-    dotnet test --configuration $Configuration --no-build --nologo
+    if ($SkipTests)
+    {
+        Write-Output "Running unit tests..."
+        dotnet test --configuration $Configuration --no-build --nologo
+    }
     
     Write-Output "Creating artifacts..."
     if (Test-Path dist)
