@@ -1,5 +1,7 @@
 # ManualMappingGuard
 
+![Nuget](https://img.shields.io/nuget/v/ManualMappingGuard)
+
 Applications are often required to map data between different models, e.g. from a domain model to a view model or a DTO. There are libraries like [AutoMapper](https://automapper.org/) for such jobs, however the use of reflection has some drawbacks: navigating and debugging mapping code becomes much harder.
 
 Writing manual mapping code on the other hand is error prone. For instance, it is easy to miss some target properties or source enum values, especially when code changes over time.
