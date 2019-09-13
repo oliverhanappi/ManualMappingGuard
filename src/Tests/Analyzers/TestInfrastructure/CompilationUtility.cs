@@ -15,10 +15,17 @@ namespace ManualMappingGuard.Analyzers.TestInfrastructure
     private static readonly Lazy<IReadOnlyCollection<MetadataReference>> s_metadataReferences
       = new Lazy<IReadOnlyCollection<MetadataReference>>(CreateMetadataReferences);
 
+    private static IEnumerable<Type> GetReferencedTypes()
+    {
+      yield return typeof(object);
+      yield return typeof(MappingMethodAttribute);
+      yield return typeof(MappingTargetAttribute);
+    }
+    
     private static IReadOnlyCollection<MetadataReference> CreateMetadataReferences()
     {
       var assemblies = ReferenceCollector
-        .CollectReferences(typeof(object).Assembly, typeof(MappingMethodAttribute).Assembly);
+        .CollectReferences(GetReferencedTypes().Select(t => t.Assembly).ToArray());
 
       return assemblies
         .Select(a => MetadataReference.CreateFromFile(a.Location))

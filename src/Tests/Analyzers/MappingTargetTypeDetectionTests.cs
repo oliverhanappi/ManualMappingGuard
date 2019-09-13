@@ -19,7 +19,7 @@ namespace ManualMappingGuard.Analyzers
       ");
 
       var targetType = method.GetMappingTargetType(compilation);
-      Assert.That(targetType.SpecialType, Is.EqualTo(SpecialType.System_Int32));
+      Assert.That(targetType?.SpecialType, Is.EqualTo(SpecialType.System_Int32));
     }
 
     [Test]
@@ -35,7 +35,55 @@ namespace ManualMappingGuard.Analyzers
       ");
 
       var targetType = method.GetMappingTargetType(compilation);
-      Assert.That(targetType.SpecialType, Is.EqualTo(SpecialType.System_Int32));
+      Assert.That(targetType?.SpecialType, Is.EqualTo(SpecialType.System_Int32));
+    }
+
+    [Test]
+    public void SyncMethod_WithTargetParameter_ReturnsTypeOfParameter()
+    {
+      var (method, compilation) = GetMapMethod(@"
+        using ManualMappingGuard;
+
+        public class TestClass
+        {
+          public void Map([MappingTarget] int value) { }
+        }
+      ");
+
+      var targetType = method.GetMappingTargetType(compilation);
+      Assert.That(targetType?.SpecialType, Is.EqualTo(SpecialType.System_Int32));
+    }
+
+    [Test]
+    public void SyncMethod_WithMultipleTargetParameters_ReturnsNull()
+    {
+      var (method, compilation) = GetMapMethod(@"
+        using ManualMappingGuard;
+
+        public class TestClass
+        {
+          public void Map([MappingTarget] int value1, [MappingTarget] int value2) { }
+        }
+      ");
+
+      var targetType = method.GetMappingTargetType(compilation);
+      Assert.That(targetType, Is.Null);
+    }
+
+    [Test]
+    public void SyncMethod_WithReturnValueAndTargetParameter_ReturnsNull()
+    {
+      var (method, compilation) = GetMapMethod(@"
+        using ManualMappingGuard;
+
+        public class TestClass
+        {
+          public int Map([MappingTarget] int value) => 0;
+        }
+      ");
+
+      var targetType = method.GetMappingTargetType(compilation);
+      Assert.That(targetType, Is.Null);
     }
 
     [Test]
@@ -45,6 +93,57 @@ namespace ManualMappingGuard.Analyzers
         public class TestClass
         {
           public void Map() { }
+        }
+      ");
+
+      var targetType = method.GetMappingTargetType(compilation);
+      Assert.That(targetType, Is.Null);
+    }
+
+    [Test]
+    public void AsyncMethod_WithTargetParameter_ReturnsTypeOfParameter()
+    {
+      var (method, compilation) = GetMapMethod(@"
+        using System.Threading.Tasks;
+        using ManualMappingGuard;
+
+        public class TestClass
+        {
+          public async Task Map([MappingTarget] int value) { }
+        }
+      ");
+
+      var targetType = method.GetMappingTargetType(compilation);
+      Assert.That(targetType?.SpecialType, Is.EqualTo(SpecialType.System_Int32));
+    }
+
+    [Test]
+    public void AsyncMethod_WithMultipleTargetParameters_ReturnsNull()
+    {
+      var (method, compilation) = GetMapMethod(@"
+        using System.Threading.Tasks;
+        using ManualMappingGuard;
+
+        public class TestClass
+        {
+          public async Task Map([MappingTarget] int value1, [MappingTarget] int value2) { }
+        }
+      ");
+
+      var targetType = method.GetMappingTargetType(compilation);
+      Assert.That(targetType, Is.Null);
+    }
+
+    [Test]
+    public void AsyncMethod_WithReturnValueAndTargetParameter_ReturnsNull()
+    {
+      var (method, compilation) = GetMapMethod(@"
+        using System.Threading.Tasks;
+        using ManualMappingGuard;
+
+        public class TestClass
+        {
+          public async Task<int> Map([MappingTarget] int value) => 0;
         }
       ");
 
@@ -77,6 +176,40 @@ namespace ManualMappingGuard.Analyzers
         public class TestClass
         {
           public async void Map() { }
+        }
+      ");
+
+      var targetType = method.GetMappingTargetType(compilation);
+      Assert.That(targetType, Is.Null);
+    }
+
+    [Test]
+    public void AsyncVoid_WithTargetParameter_ReturnsTypeOfParameter()
+    {
+      var (method, compilation) = GetMapMethod(@"
+        using System.Threading.Tasks;
+        using ManualMappingGuard;
+
+        public class TestClass
+        {
+          public async void Map([MappingTarget] int value) { }
+        }
+      ");
+
+      var targetType = method.GetMappingTargetType(compilation);
+      Assert.That(targetType?.SpecialType, Is.EqualTo(SpecialType.System_Int32));
+    }
+
+    [Test]
+    public void AsyncVoid_WithMultipleTargetParameters_ReturnsNull()
+    {
+      var (method, compilation) = GetMapMethod(@"
+        using System.Threading.Tasks;
+        using ManualMappingGuard;
+
+        public class TestClass
+        {
+          public async void Map([MappingTarget] int value1, [MappingTarget] int value2) { }
         }
       ");
 

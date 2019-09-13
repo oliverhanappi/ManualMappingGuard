@@ -1,12 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+    
+    <Import Project="..\Common.props" />
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <AssemblyName>ManualMappingGuard.Analyzers</AssemblyName>
         <RootNamespace>ManualMappingGuard.Analyzers</RootNamespace>
-        <LangVersion>8</LangVersion>
-        <Nullable>enable</Nullable>
-        <WarningsAsErrors>CS8600;CS8602;CS8603;CS8604</WarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>
@@ -22,14 +21,15 @@
     <PropertyGroup>
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <NoPackageAnalysis>true</NoPackageAnalysis>
         
         <PackageId>ManualMappingGuard</PackageId>
+        <Title>Manual Mapping Guard</Title>
         <Authors>Oliver Hanappi</Authors>
-        <PackageLicenseUrl>https://github.com/oliverhanappi/ManualMappingGuard/blob/master/LICENSE</PackageLicenseUrl>
-        <PackageProjectUrl>https://github.com/oliverhanappi/ManualMappingGuard</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/oliverhanappi/ManualMappingGuard</RepositoryUrl>
         <Description>Roslyn analyzer for C# which aids writing manual mapping code.</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/oliverhanappi/ManualMappingGuard</PackageProjectUrl>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/oliverhanappi/ManualMappingGuard.git</RepositoryUrl>
     </PropertyGroup>
     
     <ItemGroup>

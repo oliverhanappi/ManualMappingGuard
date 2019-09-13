@@ -40,7 +40,7 @@ namespace ManualMappingGuard.Analyzers
       ");
 
       var attributeSyntax = MappingMethodDetection.GetMappingMethodAttributeSyntax(method, semanticModel);
-      Assert.That(attributeSyntax.GetLocation().SourceSpan, Is.EqualTo(new TextSpan(93, 13)));
+      Assert.That(attributeSyntax!.GetLocation().SourceSpan, Is.EqualTo(new TextSpan(93, 13)));
     }
 
     [Test]
@@ -85,7 +85,7 @@ namespace ManualMappingGuard.Analyzers
       ");
 
       var attributeSyntax = MappingMethodDetection.GetMappingMethodAttributeSyntax(method, semanticModel);
-      Assert.That(attributeSyntax.GetLocation().SourceSpan, Is.EqualTo(new TextSpan(56, 51)));
+      Assert.That(attributeSyntax!.GetLocation().SourceSpan, Is.EqualTo(new TextSpan(56, 51)));
     }
 
     [Test]
@@ -118,7 +118,7 @@ namespace ManualMappingGuard.Analyzers
       ");
 
       var attributeSyntax = MappingMethodDetection.GetMappingMethodAttributeSyntax(method, semanticModel);
-      Assert.That(attributeSyntax.GetLocation().SourceSpan, Is.EqualTo(new TextSpan(129, 1)));
+      Assert.That(attributeSyntax!.GetLocation().SourceSpan, Is.EqualTo(new TextSpan(129, 1)));
     }
 
     [Test]

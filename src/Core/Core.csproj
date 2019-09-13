@@ -1,9 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+    <Import Project="..\Common.props" />
+
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <AssemblyName>ManualMappingGuard</AssemblyName>
         <RootNamespace>ManualMappingGuard</RootNamespace>
+        
+        <IsPackable>false</IsPackable>
+        <PackageId>ManualMappingGuard.Core</PackageId>
     </PropertyGroup>
 
 </Project>

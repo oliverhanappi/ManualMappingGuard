@@ -9,6 +9,17 @@ namespace ManualMappingGuard.Analyzers
   {
     public static ITypeSymbol? GetMappingTargetType(this IMethodSymbol method, Compilation compilation)
     {
+      var returnType = GetReturnType(method, compilation);
+      var mappingTargetParameterType = GetMappingTargetParameterType(method);
+
+      if (returnType != null && mappingTargetParameterType != null)
+        return null;
+
+      return returnType ?? mappingTargetParameterType;
+    }
+
+    private static ITypeSymbol? GetReturnType(IMethodSymbol method, Compilation compilation)
+    {
       if (method.ReturnsVoid)
         return null;
 
@@ -23,6 +34,16 @@ namespace ManualMappingGuard.Analyzers
         return namedReturnType.TypeArguments.Single();
 
       return returnType;
+    }
+
+    private static ITypeSymbol? GetMappingTargetParameterType(IMethodSymbol method)
+    {
+      var mappingTargetTypes = method.Parameters
+        .Where(p => p.GetAttributes().Any(a => a.AttributeClass.Name == "MappingTargetAttribute"))
+        .Select(p => p.Type)
+        .ToList();
+
+      return mappingTargetTypes.Count == 1 ? mappingTargetTypes[0] : null;
     }
   }
 }

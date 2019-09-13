@@ -12,7 +12,8 @@ namespace ManualMappingGuard.Analyzers
     public static readonly DiagnosticDescriptor MissingMappingTargetType = new DiagnosticDescriptor(
       id: MissingMappingTargetTypeId,
       title: "Missing mapping target type",
-      messageFormat: "Unable to determine target type of mapping. Ensure that this method returns a value.",
+      messageFormat: "Unable to determine target type of mapping. Ensure that this method either returns a value " +
+                     "or has a single parameter decorated with MappingTargetAttribute.",
       category: Declaration,
       defaultSeverity: DiagnosticSeverity.Error,
       isEnabledByDefault: true);

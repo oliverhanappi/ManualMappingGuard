@@ -141,7 +141,7 @@ namespace ManualMappingGuard.Analyzers
     {
       var expectedMessages = new[]
       {
-        "Error MMG0001: Unable to determine target type of mapping. Ensure that this method returns a value."
+        "Error MMG0001: Unable to determine target type of mapping. Ensure that this method either returns a value or has a single parameter decorated with MappingTargetAttribute."
       };
 
       var actualMessages = diagnostics.Select(FormatDiagnostic);

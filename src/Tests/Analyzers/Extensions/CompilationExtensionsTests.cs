@@ -8,7 +8,7 @@ namespace ManualMappingGuard.Analyzers.Extensions
   [TestFixture]
   public class CompilationExtensionsTests
   {
-    private Compilation _compilation;
+    private Compilation _compilation = default!;
 
     [OneTimeSetUp]
     public void OneTimeSetUp()
