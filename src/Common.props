@@ -2,6 +2,6 @@
   <PropertyGroup>
     <LangVersion>8</LangVersion>
     <Nullable>enable</Nullable>
-    <WarningsAsErrors>CS8600;CS8602;CS8603;CS8604;CS8618</WarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 </Project>

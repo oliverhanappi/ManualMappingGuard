@@ -54,10 +54,20 @@ namespace ManualMappingGuard.Analyzers
           mappedProperties.Add(targetProperty);
       }
 
-      var unmappedProperties = mappingTargetProperties.Except(mappedProperties, new RootPropertyEqualityComparer());
-      foreach (var unmappedProperty in unmappedProperties.OrderBy(p => p.Name))
+      var excludedPropertyNames = method.GetAttributes()
+        .Where(a => a.AttributeClass.Name == "UnmappedPropertyAttribute")
+        .Select(a => (string) a.ConstructorArguments[0].Value)
+        .ToList();
+
+      var unmappedPropertyNames = mappingTargetProperties
+        .Except(mappedProperties, new RootPropertyEqualityComparer())
+        .Select(p => p.Name)
+        .Except(excludedPropertyNames)
+        .OrderBy(n => n);
+
+      foreach (var unmappedPropertyName in unmappedPropertyNames)
       {
-        var diagnostic = Diagnostic.Create(Diagnostics.UnmappedProperty, location, unmappedProperty.Name);
+        var diagnostic = Diagnostic.Create(Diagnostics.UnmappedProperty, location, unmappedPropertyName);
         context.ReportDiagnostic(diagnostic);
       }
     }

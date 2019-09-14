@@ -137,6 +137,61 @@ namespace ManualMappingGuard.Analyzers
       AssertNoUnmappedProperties(diagnostics);
     }
 
+    [Test]
+    public async Task UnmappedProperty_Excluded_DoesNotReportMissingProperty()
+    {
+      var diagnostics = await Analyze(@"
+        public class Person
+        {
+          public int Id { get; set; }
+          public string FirstName { get; set; }
+          public string LastName { get; set; }
+        }
+
+        [MappingMethod]
+        [UnmappedProperty(nameof(Person.Id))]
+        public Person Map() => new Person { FirstName = ""Test"" };
+      ");
+
+      AssertUnmappedProperties(diagnostics, "LastName");
+    }
+
+    [Test]
+    public async Task UnmappedProperty_MultipleExcluded_DoesNotReportMissingProperties()
+    {
+      var diagnostics = await Analyze(@"
+        public class Person
+        {
+          public const string IdPropertyName = ""Id"";
+
+          public int Id { get; set; }
+          public string FirstName { get; set; }
+          public string LastName { get; set; }
+        }
+
+        [MappingMethod]
+        [UnmappedProperty(Person.IdPropertyName)]
+        [UnmappedProperty(""LastName"")]
+        public Person Map() => new Person { FirstName = ""Test"" };
+      ");
+
+      AssertNoUnmappedProperties(diagnostics);
+    }
+
+    [Test]
+    public async Task NonExistingExcludedProperty_DoesNotFail()
+    {
+      var diagnostics = await Analyze(@"
+        public class Person { }
+
+        [MappingMethod]
+        [UnmappedProperty(""NotExisting"")]
+        public Person Map() => new Person();
+      ");
+
+      Assert.That(diagnostics, Is.Empty);
+    }
+
     private void AssertMissingMappingTargetType(ImmutableArray<Diagnostic> diagnostics)
     {
       var expectedMessages = new[]
