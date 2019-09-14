@@ -3,5 +3,8 @@
     <LangVersion>8</LangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\res\signing\key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 </Project>

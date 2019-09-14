@@ -30,11 +30,12 @@
         <PackageProjectUrl>https://github.com/oliverhanappi/ManualMappingGuard</PackageProjectUrl>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/oliverhanappi/ManualMappingGuard.git</RepositoryUrl>
+        <PackageTags>mapping;roslyn-analyzers</PackageTags>
     </PropertyGroup>
     
     <ItemGroup>
-        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-        <None Include="$(OutputPath)\ManualMappingGuard.dll" Pack="true" PackagePath="lib/netstandard2.0" Visible="false" />
+        <None Include="$(OutputPath)$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+        <None Include="$(OutputPath)ManualMappingGuard.dll" Pack="true" PackagePath="lib/netstandard2.0" Visible="false" />
     </ItemGroup>
 
 </Project>
