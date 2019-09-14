@@ -24,7 +24,7 @@ The analyzer will report errors for any property with a public setter that is no
 
 You can exclude properties by adding one or more instances of `UnmappedPropertyAttribute` to the mapping method and passing the property name to it.
 
-In the example below the analyzer will report that the method `MapToModel` does not map the property `PersonModel.LastName`. The property `PersonModel.Tag` is not reported because it is declared as unmapped property.
+In the example below the analyzer will report that the method `Map` does not map the property `Person.LastName`. The property `Person.Id` is not reported because it is declared as unmapped property.
 
 ```csharp
 using ManualMappingGuard;
