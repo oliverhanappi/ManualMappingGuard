@@ -13,10 +13,13 @@ try
     dotnet clean --configuration $Configuration --verbosity minimal --nologo
     Get-ChildItem -Path src -Filter *.nupkg -Recurse | Remove-Item -Force
 
+    Write-Output "Restoring dependencies..."
+    dotnet restore
+
     Write-Output "Building..."
     dotnet build --configuration $Configuration --verbosity minimal --nologo -p:Version=$Version -p:PackageVersion=$PackageVersion
     
-    if ($SkipTests)
+    if (-not $SkipTests)
     {
         Write-Output "Running unit tests..."
         dotnet test --configuration $Configuration --no-build --nologo
