@@ -12,7 +12,7 @@ ManualMappingGuard therefore provides a Roslyn analyzer which aids writing manua
 
 ## Installation
 
-You need to add the NuGet package `ManualMappingGuard` to the project containing the mapping code.
+You need to add the NuGet package `ManualMappingGuard` to the project containing the mapping code. Please note that only the new SDK based projects are supported.
 
 ## Usage
 
