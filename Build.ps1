@@ -6,23 +6,36 @@ param
     [switch] $SkipTests = $false
 )
 
+$ErrorActionPreference = "Stop"
+
+function Exec([scriptblock] $Command)
+{
+    $global:LastExitCode = 0
+    & $Command
+
+    if ($global:LastExitCode -ne 0)
+    {
+        Throw "Command failed: $Command"
+    }
+}
+
 Push-Location $PSScriptRoot
 try
 {
     Write-Output "Cleaning..."
-    dotnet clean --configuration $Configuration --verbosity minimal --nologo
+    Exec { dotnet clean --configuration $Configuration --verbosity minimal --nologo }
     Get-ChildItem -Path src -Filter *.nupkg -Recurse | Remove-Item -Force
 
     Write-Output "Restoring dependencies..."
-    dotnet restore
+    Exec { dotnet restore }
 
     Write-Output "Building..."
-    dotnet build --configuration $Configuration --verbosity minimal --nologo -p:Version=$Version -p:PackageVersion=$PackageVersion
+    Exec { dotnet build --configuration $Configuration --verbosity minimal --no-restore --nologo -p:Version=$Version -p:PackageVersion=$PackageVersion }
     
     if (-not $SkipTests)
     {
         Write-Output "Running unit tests..."
-        dotnet test --configuration $Configuration --no-build --nologo
+        Exec { dotnet test --configuration $Configuration --no-build --nologo }
     }
     
     Write-Output "Creating artifacts..."
