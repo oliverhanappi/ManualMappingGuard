@@ -59,6 +59,10 @@ namespace ManualMappingGuard.Analyzers
         .Select(a => (string) a.ConstructorArguments[0].Value)
         .ToList();
 
+      excludedPropertyNames.AddRange(method.GetAttributes()
+        .Where(a => a.AttributeClass.Name == "UnmappedPropertiesAttribute")
+        .SelectMany(a => a.ConstructorArguments[0].Values.Select(v => (string) v.Value)));
+
       var unmappedPropertyNames = mappingTargetProperties
         .Except(mappedProperties, new RootPropertyEqualityComparer())
         .Select(p => p.Name)

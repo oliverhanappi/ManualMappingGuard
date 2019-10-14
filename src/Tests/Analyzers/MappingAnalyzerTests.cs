@@ -138,7 +138,7 @@ namespace ManualMappingGuard.Analyzers
     }
 
     [Test]
-    public async Task UnmappedProperty_Excluded_DoesNotReportMissingProperty()
+    public async Task UnmappedProperty_ExcludedSingle_DoesNotReportMissingProperty()
     {
       var diagnostics = await Analyze(@"
         public class Person
@@ -157,7 +157,26 @@ namespace ManualMappingGuard.Analyzers
     }
 
     [Test]
-    public async Task UnmappedProperty_MultipleExcluded_DoesNotReportMissingProperties()
+    public async Task UnmappedProperty_ExcludedMultiple_DoesNotReportMissingProperty()
+    {
+      var diagnostics = await Analyze(@"
+        public class Person
+        {
+          public int Id { get; set; }
+          public string FirstName { get; set; }
+          public string LastName { get; set; }
+        }
+
+        [MappingMethod]
+        [UnmappedProperties(nameof(Person.Id))]
+        public Person Map() => new Person { FirstName = ""Test"" };
+      ");
+
+      AssertUnmappedProperties(diagnostics, "LastName");
+    }
+
+    [Test]
+    public async Task UnmappedProperty_MultipleExcludedIndividually_DoesNotReportMissingProperties()
     {
       var diagnostics = await Analyze(@"
         public class Person
@@ -179,13 +198,48 @@ namespace ManualMappingGuard.Analyzers
     }
 
     [Test]
-    public async Task NonExistingExcludedProperty_DoesNotFail()
+    public async Task UnmappedProperty_MultipleExcludedAtOnce_DoesNotReportMissingProperties()
+    {
+      var diagnostics = await Analyze(@"
+        public class Person
+        {
+          public const string IdPropertyName = ""Id"";
+
+          public int Id { get; set; }
+          public string FirstName { get; set; }
+          public string LastName { get; set; }
+        }
+
+        [MappingMethod]
+        [UnmappedProperties(Person.IdPropertyName, ""LastName"")]
+        public Person Map() => new Person { FirstName = ""Test"" };
+      ");
+
+      AssertNoUnmappedProperties(diagnostics);
+    }
+
+    [Test]
+    public async Task NonExistingExcludedProperty_Single_DoesNotFail()
     {
       var diagnostics = await Analyze(@"
         public class Person { }
 
         [MappingMethod]
         [UnmappedProperty(""NotExisting"")]
+        public Person Map() => new Person();
+      ");
+
+      Assert.That(diagnostics, Is.Empty);
+    }
+
+    [Test]
+    public async Task NonExistingExcludedProperty_Multiple_DoesNotFail()
+    {
+      var diagnostics = await Analyze(@"
+        public class Person { }
+
+        [MappingMethod]
+        [UnmappedProperties(""NotExisting1"", ""NonExisting2"")]
         public Person Map() => new Person();
       ");
 
