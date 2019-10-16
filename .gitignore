@@ -8,3 +8,9 @@ dist
 
 .idea
 *.user
+
+#Visual Studio
+.vs
+
+#Resharper
+_ReSharper*
