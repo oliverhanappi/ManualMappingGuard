@@ -86,46 +86,46 @@ namespace ManualMappingGuard.Analyzers.Extensions
     [Test]
     public void InheritsFromOrEquals_SameType_ReturnsTrue()
     {
-        Compilation compilation = CompilationUtility.Compile("");
+      var compilation = CompilationUtility.Compile("");
 
-        ITypeSymbol existingType = compilation.GetExistingType<Task>();
+      var existingType = compilation.GetExistingType<Task>();
 
-        Assert.That(existingType.InheritsFromOrEquals(existingType), Is.True);
+      Assert.That(existingType.InheritsFromOrEquals(existingType), Is.True);
     }
 
     [Test]
     public void InheritsFromOrEquals_DerivedType_ReturnsTrue()
     {
-        (Compilation compilation, ITypeSymbol typeSymbol) = this.GetCompilationAndType(@"public class DerivedTask : System.Threading.Tasks.Task
+      var (compilation, typeSymbol) = this.GetCompilationAndType(@"public class DerivedTask : System.Threading.Tasks.Task
             {
             }", "DerivedTask");
 
-        ITypeSymbol existingType = compilation.GetExistingType<Task>();
+      var existingType = compilation.GetExistingType<Task>();
 
-        Assert.That(typeSymbol.InheritsFromOrEquals(existingType), Is.True);
+      Assert.That(typeSymbol.InheritsFromOrEquals(existingType), Is.True);
     }
 
     [Test]
     public void InheritsFromOrEquals_NotDerivedType_ReturnsFalse()
     {
-        (Compilation compilation, ITypeSymbol typeSymbol) = this.GetCompilationAndType(@"public class DerivedTask
+      var (compilation, typeSymbol) = this.GetCompilationAndType(@"public class DerivedTask
             {
             }", "DerivedTask");
 
-        ITypeSymbol existingType = compilation.GetExistingType<Task>();
+      var existingType = compilation.GetExistingType<Task>();
 
-        Assert.That(typeSymbol.InheritsFromOrEquals(existingType), Is.False);
+      Assert.That(typeSymbol.InheritsFromOrEquals(existingType), Is.False);
     }
 
     private ITypeSymbol GetType(string code)
     {
-        return GetCompilationAndType(code, "TestClass").Item2;
+      return GetCompilationAndType(code, "TestClass").Item2;
     }
 
     private (Compilation, ITypeSymbol) GetCompilationAndType(string code, string typeName)
     {
-        var compilation = CompilationUtility.Compile(code);
-        return (compilation, (ITypeSymbol) compilation.GetSymbolsWithName(typeName, SymbolFilter.Type).Single());
+      var compilation = CompilationUtility.Compile(code);
+      return (compilation, (ITypeSymbol) compilation.GetSymbolsWithName(typeName, SymbolFilter.Type).Single());
     }
 
     private IPropertySymbol AssertProperty(ITypeSymbol type)

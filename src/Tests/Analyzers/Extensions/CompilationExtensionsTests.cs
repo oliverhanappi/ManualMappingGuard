@@ -67,9 +67,9 @@ namespace ManualMappingGuard.Analyzers.Extensions
     [Test]
     public void TypeIsDerivedOrEqual_SameType_ReturnsTrue()
     {
-      ITypeSymbol existingType = _compilation.GetExistingType<Task>();
+      var existingType = _compilation.GetExistingType<Task>();
 
-      bool result = _compilation.TypeIsDerivedOrEqual(existingType, existingType);
+      var result = _compilation.TypeIsDerivedOrEqual(existingType, existingType);
 
       Assert.That(result, Is.True);
     }
@@ -77,22 +77,21 @@ namespace ManualMappingGuard.Analyzers.Extensions
     [Test]
     public void TypeIsDerivedOrEqual_DerivedType_ReturnsTrue()
     {
-      ITypeSymbol baseType = _compilation.GetExistingType<Task>();
-      ITypeSymbol derivedType = _compilation.GetExistingType(typeof(Task<>));
+      var baseType = _compilation.GetExistingType<Task>();
+      var derivedType = _compilation.GetExistingType(typeof(Task<>));
 
       bool result = _compilation.TypeIsDerivedOrEqual(derivedType, baseType);
 
       Assert.That(result, Is.True);
     }
-    
 
     [Test]
     public void TypeIsDerivedOrEqual_DerivedType_WrongHierarchy_ReturnsFalse()
     {
-      ITypeSymbol baseType = _compilation.GetExistingType<Task>();
-      ITypeSymbol derivedType = _compilation.GetExistingType(typeof(Task<>));
+      var baseType = _compilation.GetExistingType<Task>();
+      var derivedType = _compilation.GetExistingType(typeof(Task<>));
 
-      bool result = _compilation.TypeIsDerivedOrEqual(baseType, derivedType);
+      var result = _compilation.TypeIsDerivedOrEqual(baseType, derivedType);
 
       Assert.That(result, Is.False);
     }
@@ -100,10 +99,10 @@ namespace ManualMappingGuard.Analyzers.Extensions
     [Test]
     public void TypeIsDerivedOrEqual_NonDerivedType_ReturnsFalse()
     {
-      ITypeSymbol baseType = _compilation.GetExistingType<Task>();
-      ITypeSymbol nonDerivedType = _compilation.GetExistingType<int>();
+      var baseType = _compilation.GetExistingType<Task>();
+      var nonDerivedType = _compilation.GetExistingType<int>();
 
-      bool result = _compilation.TypeIsDerivedOrEqual(nonDerivedType, baseType);
+      var result = _compilation.TypeIsDerivedOrEqual(nonDerivedType, baseType);
 
       Assert.That(result, Is.False);
     }
