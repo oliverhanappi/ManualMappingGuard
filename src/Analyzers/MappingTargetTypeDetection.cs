@@ -10,7 +10,7 @@ namespace ManualMappingGuard.Analyzers
     public static ITypeSymbol? GetMappingTargetType(this IMethodSymbol method, Compilation compilation)
     {
       var returnType = GetReturnType(method, compilation);
-      var mappingTargetParameterType = GetMappingTargetParameterType(method);
+      var mappingTargetParameterType = GetMappingTargetParameterType(method, compilation);
 
       if (returnType != null && mappingTargetParameterType != null)
         return null;
@@ -36,10 +36,10 @@ namespace ManualMappingGuard.Analyzers
       return returnType;
     }
 
-    private static ITypeSymbol? GetMappingTargetParameterType(IMethodSymbol method)
+    private static ITypeSymbol? GetMappingTargetParameterType(IMethodSymbol method, Compilation compilation)
     {
       var mappingTargetTypes = method.Parameters
-        .Where(p => p.GetAttributes().Any(a => a.AttributeClass.Name == "MappingTargetAttribute"))
+        .Where(p => p.GetAttributes().Any(a => a.AttributeClass.InheritsFromOrEquals(compilation.GetExistingType<MappingTargetAttribute>())))
         .Select(p => p.Type)
         .ToList();
 

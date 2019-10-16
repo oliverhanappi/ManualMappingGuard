@@ -63,5 +63,49 @@ namespace ManualMappingGuard.Analyzers.Extensions
       Assert.That(() => _compilation.GetExistingType(typeof(TestFixtureAttribute)),
         Throws.ArgumentException.With.Message.StartsWith("Failed to get type NUnit.Framework.TestFixtureAttribute"));
     }
+
+    [Test]
+    public void TypeIsDerivedOrEqual_SameType_ReturnsTrue()
+    {
+      ITypeSymbol existingType = _compilation.GetExistingType<Task>();
+
+      bool result = _compilation.TypeIsDerivedOrEqual(existingType, existingType);
+
+      Assert.That(result, Is.True);
+    }
+
+    [Test]
+    public void TypeIsDerivedOrEqual_DerivedType_ReturnsTrue()
+    {
+      ITypeSymbol baseType = _compilation.GetExistingType<Task>();
+      ITypeSymbol derivedType = _compilation.GetExistingType(typeof(Task<>));
+
+      bool result = _compilation.TypeIsDerivedOrEqual(derivedType, baseType);
+
+      Assert.That(result, Is.True);
+    }
+    
+
+    [Test]
+    public void TypeIsDerivedOrEqual_DerivedType_WrongHierarchy_ReturnsFalse()
+    {
+      ITypeSymbol baseType = _compilation.GetExistingType<Task>();
+      ITypeSymbol derivedType = _compilation.GetExistingType(typeof(Task<>));
+
+      bool result = _compilation.TypeIsDerivedOrEqual(baseType, derivedType);
+
+      Assert.That(result, Is.False);
+    }
+
+    [Test]
+    public void TypeIsDerivedOrEqual_NonDerivedType_ReturnsFalse()
+    {
+      ITypeSymbol baseType = _compilation.GetExistingType<Task>();
+      ITypeSymbol nonDerivedType = _compilation.GetExistingType<int>();
+
+      bool result = _compilation.TypeIsDerivedOrEqual(nonDerivedType, baseType);
+
+      Assert.That(result, Is.False);
+    }
   }
 }

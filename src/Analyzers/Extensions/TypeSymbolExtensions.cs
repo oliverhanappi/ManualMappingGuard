@@ -16,8 +16,25 @@ namespace ManualMappingGuard.Analyzers.Extensions
         var baseProperties = type.BaseType.GetInstanceProperties();
         properties.AddRange(baseProperties.Except(overriddenProperties));
       }
-      
+
       return properties;
+    }
+
+    public static bool InheritsFromOrEquals(this ITypeSymbol type, ITypeSymbol typeToMatch)
+    {
+      ITypeSymbol typeToSearch = type;
+
+      while (typeToSearch != null)
+      {
+        if (typeToSearch.Equals(typeToMatch))
+        {
+          return true;
+        }
+
+        typeToSearch = typeToSearch.BaseType;
+      }
+
+      return false;
     }
   }
 }

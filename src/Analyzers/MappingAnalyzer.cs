@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using ManualMappingGuard.Analyzers.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -28,7 +29,7 @@ namespace ManualMappingGuard.Analyzers
     private void OnMethodDeclaration(SyntaxNodeAnalysisContext context)
     {
       var method = (IMethodSymbol) context.ContainingSymbol;
-      if (!method.IsMappingMethod())
+      if (!method.IsMappingMethod(context.Compilation))
         return;
 
       var methodDeclarationSyntax = (MethodDeclarationSyntax) context.Node;
@@ -55,12 +56,12 @@ namespace ManualMappingGuard.Analyzers
       }
 
       var excludedPropertyNames = method.GetAttributes()
-        .Where(a => a.AttributeClass.Name == "UnmappedPropertyAttribute")
+        .Where(a => a.AttributeClass.InheritsFromOrEquals(context.Compilation.GetExistingType<UnmappedPropertyAttribute>()))
         .Select(a => (string) a.ConstructorArguments[0].Value)
         .ToList();
 
       excludedPropertyNames.AddRange(method.GetAttributes()
-        .Where(a => a.AttributeClass.Name == "UnmappedPropertiesAttribute")
+        .Where(a => a.AttributeClass.InheritsFromOrEquals(context.Compilation.GetExistingType<UnmappedPropertiesAttribute>()))
         .SelectMany(a => a.ConstructorArguments[0].Values.Select(v => (string) v.Value)));
 
       var unmappedPropertyNames = mappingTargetProperties

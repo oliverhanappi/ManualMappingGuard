@@ -1,5 +1,6 @@
 using System;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace ManualMappingGuard.Analyzers.Extensions
 {
@@ -22,6 +23,11 @@ namespace ManualMappingGuard.Analyzers.Extensions
     public static ITypeSymbol GetExistingType<T>(this Compilation compilation)
     {
       return compilation.GetExistingType(typeof(T));
+    }
+
+    public static bool TypeIsDerivedOrEqual(this Compilation compilation, ITypeSymbol typeToCheck, ITypeSymbol baseType)
+    {
+      return compilation.ClassifyConversion(typeToCheck, baseType).IsImplicit;
     }
   }
 }
