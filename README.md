@@ -22,7 +22,7 @@ Declare a method as a mapping method by decorating it with `MappingMethodAttribu
 
 The analyzer will report errors for any property with a public setter that is not assigned within the mapping method.
 
-You can exclude properties by adding one or more instances of `UnmappedPropertyAttribute` to the mapping method and passing the property name to it.
+You can exclude properties by adding one or more instances of `UnmappedPropertiesAttribute` to the mapping method and passing the property names to it.
 
 In the example below the analyzer will report that the method `Map` does not map the property `Person.LastName`. The property `Person.Id` is not reported because it is declared as unmapped property.
 
@@ -46,7 +46,7 @@ public class PersonModel
 public static class Mapper
 {
     [MappingMethod]
-    [UnmappedProperty(nameof(Person.Id))]
+    [UnmappedProperties(nameof(Person.Id))]
     public static Person Map(PersonModel model)
     {
         return new Person { FirstName = model.FirstName };

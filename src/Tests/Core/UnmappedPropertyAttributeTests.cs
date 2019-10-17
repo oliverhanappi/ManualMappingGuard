@@ -1,3 +1,5 @@
+#pragma warning disable CS0618
+
 using NUnit.Framework;
 
 namespace ManualMappingGuard.Core

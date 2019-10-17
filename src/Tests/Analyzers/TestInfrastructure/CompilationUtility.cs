@@ -20,7 +20,7 @@ namespace ManualMappingGuard.Analyzers.TestInfrastructure
       yield return typeof(object);
       yield return typeof(MappingMethodAttribute);
       yield return typeof(MappingTargetAttribute);
-      yield return typeof(UnmappedPropertyAttribute);
+      yield return typeof(UnmappedPropertiesAttribute);
     }
     
     private static IReadOnlyCollection<MetadataReference> CreateMetadataReferences()
