@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace ManualMappingGuard
 {
   [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-  public class UnmappedPropertiesAttribute : Attribute
+  public sealed class UnmappedPropertiesAttribute : Attribute
   {
     public IReadOnlyCollection<string> PropertyNames { get; }
 

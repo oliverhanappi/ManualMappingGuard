@@ -3,7 +3,7 @@ using System;
 namespace ManualMappingGuard
 {
   [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-  public class UnmappedPropertyAttribute : Attribute
+  public sealed class UnmappedPropertyAttribute : Attribute
   {
     public string PropertyName { get; }
 

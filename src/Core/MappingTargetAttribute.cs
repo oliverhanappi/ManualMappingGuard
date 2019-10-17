@@ -3,7 +3,7 @@ using System;
 namespace ManualMappingGuard
 {
   [AttributeUsage(AttributeTargets.Parameter)]
-  public class MappingTargetAttribute : Attribute
+  public sealed class MappingTargetAttribute : Attribute
   {
   }
 }
